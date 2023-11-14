@@ -1,0 +1,56 @@
+#include <stdio.h>
+
+#define ROW 5
+#define COL 5
+
+int maze[ROW][COL] = {
+    {0, 1, 0, 0, 0},
+    {0, 1, 0, 1, 0},
+    {0, 0, 0, 0, 1},
+    {0, 1, 1, 0, 0},
+    {0, 1, 0, 0, 0}
+};
+
+int visited[ROW][COL] = { 0 };
+int directions[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+
+int isValid(int x, int y) {
+    return (x >= 0 && x < ROW && y >= 0 && y < COL);
+}
+
+// 深度优先搜索函数，加入对终点的判断
+int dfs(int x, int y, int endX, int endY) {
+    visited[x][y] = 1;
+
+    printf("(%d, %d) ", x, y);
+
+    if (x == endX && y == endY) {
+        printf("\nFound the path to the end.\n");
+        return 1; // 返回1表示找到了路径
+    }
+
+    for (int i = 0; i < 4; i++) {
+        int newX = x + directions[i][0];
+        int newY = y + directions[i][1];
+
+        if (isValid(newX, newY) && maze[newX][newY] == 0 && !visited[newX][newY]) {
+            if (dfs(newX, newY, endX, endY)) {
+                return 1; // 如果找到了路径，直接返回1，不再继续搜索
+            }
+        }
+    }
+
+    return 0; // 表示没有找到路径
+}
+
+int main() {
+    int startX = 0, startY = 0;
+    int endX = 4, endY = 4;
+
+    printf("Solution path: ");
+    if (!dfs(startX, startY, endX, endY)) {
+        printf("No path found to the end.\n");
+    }
+
+    return 0;
+}
