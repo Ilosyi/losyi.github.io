@@ -6,16 +6,13 @@ int sushu(int x)
 	int i;
 	if (x == 1 || (x % 2 == 0 && x != 2))
 		ret = 0;
-	for (i = 3; i < sqrt(x); i += 2)
+	for (i = 3; i <= sqrt(x); i += 2)
 	{
 		if (x % i == 0)
 			ret = 0;
 		break;
 	}
-	if (ret == 1)
-	{
-		printf("%5d", x);
-	}
+
 	return ret;
 }
 int main()
