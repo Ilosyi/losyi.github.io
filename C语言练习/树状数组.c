@@ -9,7 +9,7 @@ int lowbit(int x)
 }
 void add(int p, int x)
 {
-	while (p < N) {
+	while (p <= N) {
 	b[p] += x;
 	p += lowbit(p);
 }
