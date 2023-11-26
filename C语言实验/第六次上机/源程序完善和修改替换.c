@@ -17,6 +17,21 @@ void strsort(char* s[], int size)
 				s[j + 1] = temp;
 			}
 }
+//修改后的函数
+void Strsort(char**s, int size)
+{
+	char* temp;
+	int i, j;
+	
+	for (i = 0; i < size - 1; i++)
+		for (char **p=s,j=0; j < size - i - 1; j++,p++)
+			if (strcmp(*p, *(p+1))>0)
+			{
+				temp = *p;
+				*p = *(p+1);
+				*(p+1)= temp;
+			}
+}
 
 int main()
 {
