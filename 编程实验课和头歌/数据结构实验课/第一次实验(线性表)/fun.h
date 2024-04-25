@@ -2,6 +2,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<iostream>
+#include<algorithm>
+using namespace std;
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -44,17 +47,28 @@ status  LoadList(SqList& L, char FileName[]);
 status AddList(LISTS& Lists, char ListName[]);
 status RemoveList(LISTS& Lists, char ListName[]);
 int LocateList(LISTS Lists, char ListName[]);
+ElemType MaxSubArray(SqList L);
+int SubArrayNum(SqList L, int k);
+status SortList(SqList);
 
-status InitList(SqList& L)
-// 线性表L不存在，构造一个空的线性表，返回OK，否则返回INFEASIBLE。
+ElemType max(ElemType a, ElemType b)
 {
-
+    return a > b ? a : b;
+}
+/***************************************************************
+*函数名称：InitList
+*函数功能：创建线性表
+*注释： 线性表L不存在，构造一个空的线性表，返回OK，否则返回INFEASIBL
+*返回值类型：status类型
+****************************************************************/
+status InitList(SqList& L)
+{
     /********** Begin *********/
     if (!L.elem)//如果线性表为空
     {
-        L.elem = (ElemType*)malloc(sizeof(ElemType) * LIST_INIT_SIZE);
-        L.length = 0;
-        L.listsize = LIST_INIT_SIZE;
+        L.elem = (ElemType*)malloc(sizeof(ElemType) * LIST_INIT_SIZE);//内存分配
+        L.length = 0;//长度初始化为0
+        L.listsize = LIST_INIT_SIZE;//初始化空间大小
         return OK;
     }
     else {
@@ -62,13 +76,19 @@ status InitList(SqList& L)
     }
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：DestroyList
+*函数功能：销毁线性表
+*注释：如果线性表L存在，销毁线性表L，释放数据元素的空间，返回OK，否则返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
 status DestroyList(SqList& L)
-// 如果线性表L存在，销毁线性表L，释放数据元素的空间，返回OK，否则返回INFEASIBLE。
 {
     /********** Begin *********/
-    if (L.elem)
+    if (L.elem)//如果线性表存在
     {
-        free(L.elem);
+        free(L.elem);//释放空间
         L.elem = NULL;
         L.length = 0;
         L.listsize = 0;
@@ -78,35 +98,54 @@ status DestroyList(SqList& L)
 
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：ClearList
+*函数功能：清空线性表
+*注释：如果线性表L存在，删除线性表L中的所有元素，返回OK，否则返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
 status ClearList(SqList& L)
-// 如果线性表L存在，删除线性表L中的所有元素，返回OK，否则返回INFEASIBLE。
-{
+{ 
     /********** Begin *********/
-    if (L.elem)
+    if (L.elem)//如果线性表存在
     {
-        L.length = 0;
+        L.length = 0;//长度置为0，等价于删除所有元素
         return OK;
     }
     else return INFEASIBLE;
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：ListEmpty
+*函数功能：清空线性表
+*注释：// 如果线性表L存在，判断线性表L是否为空，空就返回TRUE，否则返回FALSE；如果线性表L不存在，返回INFEASIBLE
+*返回值类型：status类型
+****************************************************************/
 status ListEmpty(SqList L)
-// 如果线性表L存在，判断线性表L是否为空，空就返回TRUE，否则返回FALSE；如果线性表L不存在，返回INFEASIBLE。
 {
     /********** Begin *********/
-    if (!L.elem)
+    if (!L.elem)//如果线性表不存在
     {
         return INFEASIBLE;
     }
-    else {
+    else 
+    {
         if (L.length == 0) return TRUE;
         else return FALSE;
     }
 
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：ListLength
+*函数功能：线性表长度
+*注释：如果线性表L存在，返回线性表L的长度，否则返回INFEASIBLE
+*返回值类型：status类型
+****************************************************************/
 status ListLength(SqList L)
-// 如果线性表L存在，返回线性表L的长度，否则返回INFEASIBLE。
 {
     /********** Begin *********/
     if (!L.elem) return INFEASIBLE;
@@ -349,7 +388,7 @@ status RemoveList(LISTS& Lists, char ListName[])
         return OK;
     }
     else return ERROR;
-        /********** End **********/
+    /********** End **********/
 }
 int LocateList(LISTS Lists, char ListName[])
 // 在Lists中查找一个名称为ListName的线性表，成功返回逻辑序号，否则返回0
@@ -368,4 +407,67 @@ int LocateList(LISTS Lists, char ListName[])
     if (flag == -1) return 0;
     else return flag;
     /********** End **********/
+}
+
+/***************************************************************
+*函数名称：MaxSubArray
+*函数功能：计算最大连续子数组和
+*注释：利用贪心思想保留有益结果
+*返回值类型：ElemType类型
+****************************************************************/
+ElemType MaxSubArray(SqList L)
+{   
+        ElemType ans = L.elem[0];
+        ElemType sum = 0;
+        for (int i = 0; i < L.length; i++)
+        {
+            if (sum >= 0) sum += L.elem[i];
+            else sum = L.elem[i];
+            ans = max(ans, sum);
+        }
+        return ans;
+    
+}
+/***************************************************************
+*函数名称：SubArrayNum
+*函数功能：计算和为K的子数组个数
+*注释：利用前缀和和枚举算法比较每一种情况
+*返回值类型：int类型
+****************************************************************/
+int SubArrayNum(SqList L,int k) {
+    int count = 0;
+
+    // 计算前缀和数组
+    int *prefixSum=(int*)malloc(sizeof(int)*(L.length+1));
+    prefixSum[0] = 0;
+    for (int i = 0; i < L.length; i++) {
+        prefixSum[i + 1] = prefixSum[i] + L.elem[i];
+    }
+
+    // 遍历所有子数组并比较和是否为k
+    for (int i = 0; i < L.length; i++) {
+        for (int j = i + 1; j <= L.length; j++) {
+            if (prefixSum[j] - prefixSum[i] == k) {
+                count++;
+            }
+        }
+    }
+   return count;
+}
+
+/***************************************************************
+*函数名称：SortList
+*函数功能：线性表排序
+*注释：如果线性表不存在，返回INFEASIBLE，如果线性表为空，返回ERROR。
+*返回值类型：status类型
+****************************************************************/
+status SortList(SqList L)
+{
+    if (!L.elem) return INFEASIBLE;
+    else if (L.length==0) return ERROR;
+    else
+    {
+        sort(L.elem, L.elem + L.length);//调用库函数从小到大排序
+        return OK;
+    }
 }
