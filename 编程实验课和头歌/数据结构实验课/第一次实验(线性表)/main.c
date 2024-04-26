@@ -1,28 +1,31 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "fun.h"
 int main(void) {
-	 Lists.elem[0].L.elem=NULL;
+	Lists.elem[0].L.elem = NULL; Lists.length = 1;
 	 int op = 1;
-	 int n = 0;//默认对第一个线性表操作
+	 int n = 0;
+	 int u = 0;//默认对第一个线性表操作
 	ElemType e1, e2, e3, e5, e6, e7; int f, i, m, j,k;//用于临时储存数据或进行状态判断
 	char filename[80];//进行读写操作的文件名
+	char listname[20];//用于多线性表命名，定位等操作
 	while (op) {
 		system("cls");	printf("\n\n");//清屏并创建一个整洁的菜单
 		printf("      Menu for Linear Table On Sequence Structure \n");
-		printf("-------------------------------------------------\n");
-		printf("    	  1. InitList       7. LocateElem\n");
-		printf("    	  2. DestroyList    8. PriorElem\n");
-		printf("    	  3. ClearList      9. NextElem \n");
-		printf("    	  4. ListEmpty      10. ListInsert\n");
-		printf("    	  5. ListLength     11. ListDelete\n");
-		printf("    	  6. GetElem        12. ListTrabverse\n");
-		printf("          13. MaxSubArray    14. SubArrayNum\n");
-		printf("          15. SortList       16. SaveList\n");
-		printf("    	  17. LoadList       18. InitValue\n");
-		printf("          19. ChooseList(默认在第一个线性表操作)\n");
-		printf("          20. NameList       21. AllListTrabverse\n");
+		printf("---------------------------------------------------------\n");
+		printf("    	  1. InitList          11. ListDelete\n");
+		printf("    	  2. DestroyList       12. ListTrabverse\n");
+		printf("    	  3. ClearList         13. MaxSubArray\n");
+		printf("    	  4. ListEmpty         14. SubArrayNum\n");
+		printf("    	  5. ListLength        15. SortList\n");
+		printf("    	  6. GetElem           16. SaveList\n");
+		printf("          7. LocateElem        17. LoadList\n");
+		printf("          8. PriorElem         18. InitValue\n");
+		printf("    	  9. NextElem          19. ChooseList(默认首线性表操作)\n");
+		printf("          10. ListInsert       20. NameList\n");
+		printf("          21.AddList           22. RemoveList\n");
+		printf("          23.LocateList        24. AllListTrabverse\n");
 		printf("          0.Exit\n");
-		printf("-------------------------------------------------\n");
+		printf("---------------------------------------------------------\n");
 		printf("    请选择你的操作[0~12]:");
 		scanf("%d", &op);
 		switch (op) {
@@ -163,8 +166,14 @@ int main(void) {
 			break;
 		case 19:
 			printf("请选择需要操作的线性表编号(1-10):\n");
+			u = n;
 			scanf("%d", &n); n--;
-			printf("切换完成!\n");
+			if (n + 1 > Lists.length)
+			{
+				printf("切换失败!\n");
+				n = u;
+			}
+			else printf("切换成功!\n");
 			getchar(); getchar();
 			break;
 		case 20:
@@ -174,6 +183,33 @@ int main(void) {
 			getchar(); getchar();
 			break;
 		case 21:
+			if (Lists.length > 9) printf("线性表已达10个，无法添加!\n");
+			else 
+			{
+				printf("请输入要添加的线性表名:\n");
+				scanf("%s", listname);
+				AddList(Lists, listname);
+				printf("添加成功!\n");
+			}
+			getchar(); getchar();
+			break;
+		case 22:
+			printf("请输入要删除的线性表名:\n");
+			scanf("%s", listname);
+			if (RemoveList(Lists, listname) == OK) printf("删除成功!\n");
+			else printf("删除失败!\n");
+			getchar(); getchar();
+			break;
+		case 23:
+			printf("请输入要查找的线性表名:\n");
+			scanf("%s", listname);
+			f = LocateList(Lists, listname);
+			if (f != 0) printf("该线性表的逻辑序号为%d\n", f);
+			else printf("没有找到该线性表\n");
+			getchar(); getchar();
+			break;
+		case 24:
+
 			for (int i = 0; i < 10; i++)
 			{
 				if (Lists.elem[i].L.elem&&Lists.elem[i].L.length)
