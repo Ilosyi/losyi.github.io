@@ -2,10 +2,10 @@
 #include "fun.h"
 int main(void) {
 	Lists.elem[0].L.elem = NULL; Lists.length = 1;
-	 int op = 1;
-	 int n = 0;
-	 int u = 0;//默认对第一个线性表操作
-	ElemType e1, e2, e3, e5, e6, e7; int f, i, m, j,k;//用于临时储存数据或进行状态判断
+	int op = 1;
+	int n = 0;
+	int u = 0;//默认对第一个线性表操作
+	ElemType e1, e2, e3, e5, e6, e7; int f, i, m, j, k;//用于临时储存数据或进行状态判断
 	char filename[80];//进行读写操作的文件名
 	char listname[20];//用于多线性表命名，定位等操作
 	while (op) {
@@ -15,7 +15,6 @@ int main(void) {
 		printf("    	  1. InitList          11. ListDelete\n");
 		printf("    	  2. DestroyList       12. ListTrabverse\n");
 		printf("    	  3. ClearList         13. MaxSubArray\n");
-		printf("    	  4. ListEmpty         14. SubArrayNum\n");
 		printf("    	  5. ListLength        15. SortList\n");
 		printf("    	  6. GetElem           16. SaveList\n");
 		printf("          7. LocateElem        17. LoadList\n");
@@ -127,25 +126,27 @@ int main(void) {
 			{
 				printf("请输入目标和K的值:\n");
 				scanf("%d", &k);
-				printf("和为%d的连续子数组数目为%d\n",k, SubArrayNum(Lists.elem[n].L,k));
+				printf("和为%d的连续子数组数目为%d\n", k, SubArrayNum(Lists.elem[n].L, k));
 			}
 			getchar(); getchar();
 			break;
 		case 15:
 			j = SortList(Lists.elem[n].L);
-			if (j==INFEASIBLE) printf("线性表不存在!\n");
-			else if (j==ERROR) printf("线性表为空!\n");
+			if (j == INFEASIBLE) printf("线性表不存在!\n");
+			else if (j == ERROR) printf("线性表为空!\n");
 			else printf("排序已完成!\n");
 			getchar(); getchar();
 			break;
 		case 16:
-			strcpy(filename, "C:\\Users\\HUAWEI\\Documents\\线性表写入测试.txt");
+			printf("请输入文件路径:\n");
+			scanf("%s", filename);
 			if (SaveList(Lists.elem[n].L, filename) == OK) printf("数据写入完成!\n");
 			else printf("写入失败!\n");
 			getchar(); getchar();
 			break;
 		case 17:
-			strcpy(filename, "C:\\Users\\HUAWEI\\Documents\\线性表写入测试.txt");
+			printf("请输入文件路径:\n");
+			scanf("%s", filename);
 			if (LoadList(Lists.elem[n].L, filename) == OK) printf("数据读入完成!\n");
 			else printf("读入失败!\n");
 			getchar(); getchar();
@@ -184,7 +185,7 @@ int main(void) {
 			break;
 		case 21:
 			if (Lists.length > 9) printf("线性表已达10个，无法添加!\n");
-			else 
+			else
 			{
 				printf("请输入要添加的线性表名:\n");
 				scanf("%s", listname);
@@ -212,7 +213,7 @@ int main(void) {
 
 			for (int i = 0; i < 10; i++)
 			{
-				if (Lists.elem[i].L.elem&&Lists.elem[i].L.length)
+				if (Lists.elem[i].L.elem && Lists.elem[i].L.length)
 				{
 					printf("%s ", Lists.elem[i].name);//打印线性表名
 					ListTraverse(Lists.elem[i].L);//打印数据
