@@ -15,6 +15,7 @@ int main(void) {
 		printf("    	  1. InitList          11. ListDelete\n");
 		printf("    	  2. DestroyList       12. ListTrabverse\n");
 		printf("    	  3. ClearList         13. MaxSubArray\n");
+		printf("    	  4. ListEmpty         14. SubArrayNum\n");
 		printf("    	  5. ListLength        15. SortList\n");
 		printf("    	  6. GetElem           16. SaveList\n");
 		printf("          7. LocateElem        17. LoadList\n");
