@@ -54,12 +54,14 @@ ElemType max(ElemType a, ElemType b)
 {
     return a > b ? a : b;
 }
+
 /***************************************************************
 *函数名称：InitList
 *函数功能：创建线性表
 *注释： 线性表L不存在，构造一个空的线性表，返回OK，否则返回INFEASIBL
 *返回值类型：status类型
 ****************************************************************/
+
 status InitList(SqList& L)
 {
     if (!L.elem)//如果线性表为空
@@ -80,6 +82,7 @@ status InitList(SqList& L)
 *注释：如果线性表L存在，销毁线性表L，释放数据元素的空间，返回OK，否则返回INFEASIBLE。
 *返回值类型：status类型
 ****************************************************************/
+
 status DestroyList(SqList& L)
 {
     if (L.elem)//如果线性表存在
@@ -100,8 +103,9 @@ status DestroyList(SqList& L)
 *注释：如果线性表L存在，删除线性表L中的所有元素，返回OK，否则返回INFEASIBLE。
 *返回值类型：status类型
 ****************************************************************/
+
 status ClearList(SqList& L)
-{ 
+{
     if (L.elem)//如果线性表存在
     {
         L.length = 0;//长度置为0，等价于删除所有元素
@@ -116,13 +120,14 @@ status ClearList(SqList& L)
 *注释：如果线性表L存在，判断线性表L是否为空，空就返回TRUE，否则返回FALSE；如果线性表L不存在，返回INFEASIBLE
 *返回值类型：status类型
 ****************************************************************/
+
 status ListEmpty(SqList L)
 {
     if (!L.elem)//如果线性表不存在
     {
         return INFEASIBLE;
     }
-    else 
+    else
     {
         if (L.length == 0) return TRUE;
         else return FALSE;
@@ -136,6 +141,7 @@ status ListEmpty(SqList L)
 *注释：如果线性表L存在，返回线性表L的长度，否则返回INFEASIBLE
 *返回值类型：status类型
 ****************************************************************/
+
 status ListLength(SqList L)
 {
     /********** Begin *********/
@@ -144,8 +150,16 @@ status ListLength(SqList L)
 
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：GetElem
+*函数功能：获取元素
+*注释：如果线性表L存在，获取线性表L的第i个元素，保存在e中，返回OK；
+如果i不合法，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status GetElem(SqList L, int i, ElemType& e)
-// 如果线性表L存在，获取线性表L的第i个元素，保存在e中，返回OK；如果i不合法，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
 {
     if (!L.elem) return INFEASIBLE;
     else {
@@ -157,13 +171,21 @@ status GetElem(SqList L, int i, ElemType& e)
     }
 
 }
+
+/***************************************************************
+*函数名称：LocateElem
+*函数功能：查找元素
+*注释： 如果线性表L存在，查找元素e在线性表L中的位置序号并返回该序号；
+如果e不存在，返回0；当线性表L不存在时，返回INFEASIBLE（即-1）。
+*返回值类型：int类型
+****************************************************************/
+
 int LocateElem(SqList L, ElemType e)
-// 如果线性表L存在，查找元素e在线性表L中的位置序号并返回该序号；如果e不存在，返回0；当线性表L不存在时，返回INFEASIBLE（即-1）。
 {
     if (!L.elem) return INFEASIBLE;
     else
     {
-        int flag = -1;
+        int flag = -1;//表示尚未找到
         for (int i = 0; i < L.length; i++)
         {
             if (L.elem[i] == e)
@@ -176,10 +198,18 @@ int LocateElem(SqList L, ElemType e)
     }
 
 }
+
+/***************************************************************
+*函数名称：PriorElem
+*函数功能：获得前驱
+*注释：如果线性表L存在，获取线性表L中元素e的前驱，保存在pre中，返回OK；
+如果没有前驱，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status PriorElem(SqList L, ElemType e, ElemType& pre)
-// 如果线性表L存在，获取线性表L中元素e的前驱，保存在pre中，返回OK；如果没有前驱，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
 {
- 
+
     if (!L.elem) return INFEASIBLE;
     else {
         for (int i = 1; i < L.length; i++)
@@ -191,10 +221,19 @@ status PriorElem(SqList L, ElemType e, ElemType& pre)
         }
         return ERROR;
     }
- 
+
 }
+
+/***************************************************************
+*函数名称：NextElem
+*函数功能：获取后继
+*注释：如果线性表L存在，获取线性表L元素e的后继，保存在next中，返回OK；
+如果没有后继，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status NextElem(SqList L, ElemType e, ElemType& next)
-// 如果线性表L存在，获取线性表L元素e的后继，保存在next中，返回OK；如果没有后继，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+
 {
 
     if (!L.elem) return INFEASIBLE;
@@ -210,8 +249,16 @@ status NextElem(SqList L, ElemType e, ElemType& next)
     }
 
 }
+
+/***************************************************************
+*函数名称：ListInsert
+*函数功能：插入元素
+*注释：如果线性表L存在，将元素e插入到线性表L的第i个元素之前，返回OK；
+当插入位置不正确时，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status ListInsert(SqList& L, int i, ElemType e)
-// 如果线性表L存在，将元素e插入到线性表L的第i个元素之前，返回OK；当插入位置不正确时，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
 {
     if (!L.elem) return INFEASIBLE;
     else {
@@ -235,8 +282,16 @@ status ListInsert(SqList& L, int i, ElemType e)
     }
 
 }
+
+/***************************************************************
+*函数名称：ListTraverse
+*函数功能：遍历表
+*注释： 如果线性表L存在，依次显示线性表中的元素，每个元素间空一格，返回OK；
+如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status ListTraverse(SqList L)
-// 如果线性表L存在，依次显示线性表中的元素，每个元素间空一格，返回OK；如果线性表L不存在，返回INFEASIBLE。
 {
 
     if (!L.elem) return INFEASIBLE;
@@ -251,21 +306,30 @@ status ListTraverse(SqList L)
     }
 
 }
+
+/***************************************************************
+*函数名称：ListDelete
+*函数功能：删除元素
+*注释：如果线性表L存在，删除线性表L的第i个元素，并保存在e中，返回OK；
+当删除位置不正确时，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status ListDelete(SqList& L, int i, ElemType& e)
-// 如果线性表L存在，删除线性表L的第i个元素，并保存在e中，返回OK；当删除位置不正确时，返回ERROR；如果线性表L不存在，返回INFEASIBLE。
+
 {
- 
+
     if (!L.elem) return INFEASIBLE;
     else {
-        if (i <= 0 || i >= L.length + 1) return ERROR;
+        if (i <= 0 || i >= L.length + 1) return ERROR;//判断i的位置是否合法
         else {
-            if (i == L.length)
+            if (i == L.length)//如果是最后一个元素，删除即可
             {
                 e = L.elem[i - 1];
                 L.length--;
                 return OK;
             }
-            else
+            else            //否则需要将其他元素向前移动
             {
                 e = L.elem[i - 1];
                 for (int j = i - 1; j <= L.length - 2; j++)
@@ -280,17 +344,24 @@ status ListDelete(SqList& L, int i, ElemType& e)
 
 }
 
+/***************************************************************
+*函数名称：SaveList
+*函数功能：保存线性表到文件中
+*注释：如果线性表L存在，将线性表L的的元素写到FileName文件中，返回OK，否则返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
 status  SaveList(SqList L, char FileName[])
-// 如果线性表L存在，将线性表L的的元素写到FileName文件中，返回OK，否则返回INFEASIBLE。
 {
     FILE* fp;
     fp = fopen(FileName, "w");
     if (!L.elem) return INFEASIBLE;
     else {
-        for (int i = 0; i < L.length; i++) {
-            fprintf(fp, "%d", L.elem[i]);
+        for (int i = 0; i < L.length; i++) 
+        {
+            fprintf(fp, "%d", L.elem[i]);//将数据打印到文件中
             if (i != L.length - 1) {
-                fprintf(fp, " ");
+                fprintf(fp, " ");  //格式控制
             }
         }
         fclose(fp);
@@ -298,23 +369,31 @@ status  SaveList(SqList L, char FileName[])
 
     }
 }
-status  LoadList(SqList& L, char FileName[])
-{        
- // 如果线性表L不存在，将FileName文件中的数据读入到线性表L中，返回OK，否则返回INFEASIBLE。
 
+/***************************************************************
+*函数名称：LoadList
+*函数功能：从文件中读入数据到线性表
+*注释： 如果线性表L不存在，将FileName文件中的数据读入到线性表L中，返回OK，否则返回INFEASIBLE。
+*返回值类型：status类型
+****************************************************************/
+
+status  LoadList(SqList& L, char FileName[])
+{
     FILE* fp;
     fp = fopen(FileName, "r");
     if (L.elem) return INFEASIBLE;
     else
     {
-        L.elem = (ElemType*)malloc(sizeof(ElemType) * LIST_INIT_SIZE);
+        L.elem = (ElemType*)malloc(sizeof(ElemType) * LIST_INIT_SIZE);//创建新表
         L.length = 0;
         L.listsize = LIST_INIT_SIZE;
 
         ElemType data;
-        while (fscanf(fp, "%d", &data) != EOF) {
-            if (L.length >= L.listsize) {
-                L.elem = (ElemType*)realloc(L.elem, sizeof(ElemType) * (
+        while (fscanf(fp, "%d", &data) != EOF)  //从文件中读取数据
+        {
+            if (L.length >= L.listsize)//若线性表已满，进行扩容
+            {
+                L.elem = (ElemType*)realloc(L.elem, sizeof(ElemType) * ( 
                     L.listsize + LISTINCREMENT));
                 L.listsize += LISTINCREMENT;
             }
@@ -325,11 +404,17 @@ status  LoadList(SqList& L, char FileName[])
         return OK;
     }
 }
+
+/***************************************************************
+*函数名称：AddList
+*函数功能：添加新表
+*注释：如果线性表集合已满，返回ERROR，否则创建一个新线性表并分配内存，返回OK。
+*返回值类型：status类型
+****************************************************************/
+
 status AddList(LISTS& Lists, char ListName[])
-// 只需要在Lists中增加一个名称为ListName的空线性表，线性表数据由后台测试程序插入。
+
 {
-    // 请在这里补充代码，完成本关任务
-    /********** Begin *********/
     if (Lists.length > 9) return ERROR;
     else {
         strcpy(Lists.elem[Lists.length].name, ListName);
@@ -340,18 +425,23 @@ status AddList(LISTS& Lists, char ListName[])
     }
     /********** End **********/
 }
+
+/***************************************************************
+*函数名称：RemoveList
+*函数功能：删除指定表
+*注释：如果找到该线性表，删除并返回OK，否则返回ERROR
+*返回值类型：status类型
+****************************************************************/
+
 status RemoveList(LISTS& Lists, char ListName[])
-// Lists中删除一个名称为ListName的线性表
 {
-    // 请在这里补充代码，完成本关任务
-    /********** Begin *********/
-    int flag = -1;
+    int flag = -1;//判断是否找到目标
     for (int i = 0; i < Lists.length; i++)
     {
-        if (strcmp(Lists.elem[i].name, ListName) == 0)
+        if (strcmp(Lists.elem[i].name, ListName) == 0)//依次比较
         {
             flag = i;
-            break;
+            break;//找到后退出循环
         }
     }
     if (flag != -1)
@@ -363,13 +453,19 @@ status RemoveList(LISTS& Lists, char ListName[])
         return OK;
     }
     else return ERROR;
-    /********** End **********/
 }
+
+/***************************************************************
+*函数名称：LocateList
+*函数功能：查找指定表
+*注释：如果找到该线性表，返回其逻辑序号，否则返回0.
+*返回值类型：int类型
+****************************************************************/
+
 int LocateList(LISTS Lists, char ListName[])
 // 在Lists中查找一个名称为ListName的线性表，成功返回逻辑序号，否则返回0
 {
-    // 请在这里补充代码，完成本关任务
-    /********** Begin *********/
+
     int flag = -1;
     for (int i = 0; i < Lists.length; i++)
     {
@@ -381,7 +477,6 @@ int LocateList(LISTS Lists, char ListName[])
     }
     if (flag == -1) return 0;
     else return flag;
-    /********** End **********/
 }
 
 /***************************************************************
@@ -390,30 +485,33 @@ int LocateList(LISTS Lists, char ListName[])
 *注释：利用贪心思想保留有益结果
 *返回值类型：ElemType类型
 ****************************************************************/
+
 ElemType MaxSubArray(SqList L)
-{   
-        ElemType ans = L.elem[0];
-        ElemType sum = 0;
-        for (int i = 0; i < L.length; i++)
-        {
-            if (sum >= 0) sum += L.elem[i];
-            else sum = L.elem[i];
-            ans = max(ans, sum);
-        }
-        return ans;
-    
+{
+    ElemType ans = L.elem[0];
+    ElemType sum = 0;
+    for (int i = 0; i < L.length; i++)
+    {
+        if (sum >= 0) sum += L.elem[i];
+        else sum = L.elem[i];
+        ans = max(ans, sum);
+    }
+    return ans;
+
 }
+
 /***************************************************************
 *函数名称：SubArrayNum
 *函数功能：计算和为K的子数组个数
 *注释：利用前缀和和枚举算法比较每一种情况
 *返回值类型：int类型
 ****************************************************************/
-int SubArrayNum(SqList L,int k) {
+
+int SubArrayNum(SqList L, int k) {
     int count = 0;
 
     // 计算前缀和数组
-    int *prefixSum=(int*)malloc(sizeof(int)*(L.length+1));
+    int* prefixSum = (int*)malloc(sizeof(int) * (L.length + 1));
     prefixSum[0] = 0;
     for (int i = 0; i < L.length; i++) {
         prefixSum[i + 1] = prefixSum[i] + L.elem[i];
@@ -427,7 +525,7 @@ int SubArrayNum(SqList L,int k) {
             }
         }
     }
-   return count;
+    return count;
 }
 
 /***************************************************************
@@ -436,10 +534,11 @@ int SubArrayNum(SqList L,int k) {
 *注释：如果线性表不存在，返回INFEASIBLE，如果线性表为空，返回ERROR。
 *返回值类型：status类型
 ****************************************************************/
+
 status SortList(SqList L)
 {
     if (!L.elem) return INFEASIBLE;
-    else if (L.length==0) return ERROR;
+    else if (L.length == 0) return ERROR;
     else
     {
         sort(L.elem, L.elem + L.length);//调用库函数从小到大排序
