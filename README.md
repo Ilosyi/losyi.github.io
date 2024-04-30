@@ -1,2 +1,4 @@
-# losyi.github.io
-losyi's repository while studying in university
+# losyi的code库
+华中科技大学CS数据结构试验 SE C语言实验报告 头歌编程题
+源代码和实验报告
+如果对你有帮助的话，欢迎star😊
