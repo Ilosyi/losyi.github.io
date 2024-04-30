@@ -82,11 +82,11 @@ int main(void) {
 			break;
 		case 9:
 			ElemType next;
-			printf("请输入需要查找后驱的元素e:\n");
+			printf("请输入需要查找后继的元素e:\n");
 			scanf("%d", &e5);
 			if (NextElem(Lists.elem[n].L, e5, next) == INFEASIBLE) printf("线性表不存在!\n");
-			else if (NextElem(Lists.elem[n].L, e5, next) == ERROR) printf("后驱不存在!\n");
-			else printf("%d的后驱值为%d,已保存在next中\n", e5, next);
+			else if (NextElem(Lists.elem[n].L, e5, next) == ERROR) printf("后继不存在!\n");
+			else printf("%d的后继值为%d,已保存在next中\n", e5, next);
 			getchar(); getchar();
 			break;
 		case 10:
