@@ -26,7 +26,7 @@ int main(void) {
 		printf("          23.LocateList        24. AllListTrabverse\n");
 		printf("          0.Exit\n");
 		printf("---------------------------------------------------------\n");
-		printf("    请选择你的操作[0~12]:");
+		printf("    请选择你的操作[0~24]:");
 		scanf("%d", &op);
 		switch (op) {
 		case 1:
