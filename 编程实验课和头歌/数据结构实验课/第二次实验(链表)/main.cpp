@@ -28,7 +28,7 @@ int main(void)
 		printf("          19.ChangeList       20. RemoveList\n");
 		printf("    	  0. Exit\n");
 		printf("-------------------------------------------------\n");
-		printf("    请选择你的操作[0~12]:");
+		printf("    请选择你的操作[0~20]:");
 		scanf("%d", &op);
 		switch (op){
 		case 1:
