@@ -419,8 +419,10 @@ status DeleteNode(BiTree& T, KeyType e)
 
 /***************************************************************
 *函数名称：PreOrderTraverse
-*函数功能：先序遍历二叉树T
-*注释：
+*函数功能：先序遍历二叉树
+*注释：采用栈来实现先序遍历的非递归算法。创建栈，并初始化。遍历结点，
+若结点存在，则入栈，并输出结点的值，指向其左孩子；否则出栈，访问结点
+，指向其右孩子。如果结点不存在或者栈为空，则遍历结束
 *返回值类型：status类型
 ****************************************************************/
 
@@ -449,17 +451,34 @@ status PreOrderTraverse(BiTree T)
     }
     else return INFEASIBLE;
 }
-void InOrderTraverse(BiTree T)
+
+/***************************************************************
+*函数名称：InOrderTraverse
+*函数功能：中序遍历二叉树
+*注释：采用递归的方式
+*返回值类型：status类型
+****************************************************************/
+
+status InOrderTraverse(BiTree T)
 {
     if (T)
     {
         InOrderTraverse(T->lchild);
         printf(" %d,%s", T->data.key, T->data.others);
         InOrderTraverse(T->rchild);
+        return OK;
     }
+    else return INFEASIBLE;
 }
+
+/***************************************************************
+*函数名称：PostOrderTraverse
+*函数功能：后序遍历二叉树
+*注释：采用递归的方式
+*返回值类型：status类型
+****************************************************************/
+
 status PostOrderTraverse(BiTree T)
-//后序遍历二叉树T
 {
 
     if (T)
@@ -471,8 +490,16 @@ status PostOrderTraverse(BiTree T)
     }
     else return INFEASIBLE;
 }
+
+/***************************************************************
+*函数名称：LevelOrderTraverse
+*函数功能：层序遍历二叉树
+*注释：使用队列保存每一层的所有节点，把队列里的所有节点出队列，
+然后把这些出去节点各自的子节点入队列。以此来完成对每层的遍历。
+*返回值类型：status类型
+****************************************************************/
+
 status LevelOrderTraverse(BiTree T)
-//按层遍历二叉树T
 {
     queue < BiTree > q;
     if (T != NULL)
@@ -489,6 +516,14 @@ status LevelOrderTraverse(BiTree T)
     }
     return OK;
 }
+
+/***************************************************************
+*函数名称：MaxPathSum
+*函数功能：计算二叉树中从根节点到任意节点路径上的最大带权路径和
+*注释：采用递归方式实现
+*返回值类型：int
+****************************************************************/
+
 int MaxPathSum(BiTree T) {
     if (!T) return 0;
 
@@ -499,6 +534,15 @@ int MaxPathSum(BiTree T) {
     // 返回左右子树中的较大路径和，加上当前节点的值
     return max(leftSum, rightSum) + T->data.key;
 }
+
+/***************************************************************
+*函数名称：LowestCommonAncestor
+*函数功能：找到二叉树中两个节点的最近公共祖先
+*注释：假设二叉树节点结构为BiTree，节点数据类型为KeyType，节点中
+含有指向左右子节点的指针lchild和rchild
+*返回值类型：BiTree
+****************************************************************/
+
 BiTree LowestCommonAncestor(BiTree T, KeyType e1, KeyType e2) {
     // 如果根节点为空，直接返回空指针
     if (!T) return NULL;
@@ -520,6 +564,7 @@ BiTree LowestCommonAncestor(BiTree T, KeyType e1, KeyType e2) {
         return T;
     }
 }
+
 void printBinaryTree(BiTree root) {
     if (!root) return;
 
@@ -547,6 +592,14 @@ void printBinaryTree(BiTree root) {
         std::cout << std::endl;
     }
 }
+
+/***************************************************************
+*函数名称：InvertTree
+*函数功能：翻转二叉树，即交换每个节点的左右子树。
+*注释：交换左右子树，递归实现
+*返回值类型：status
+****************************************************************/
+
 status InvertTree(BiTree& T) {
     // 如果当前节点为空，直接返回操作成功
     if (!T)
@@ -564,6 +617,14 @@ status InvertTree(BiTree& T) {
     // 返回操作成功
     return OK;
 }
+
+/***************************************************************
+*函数名称：PreOrderPrint
+*函数功能：先序遍历二叉树
+*注释：SaveBiTree的辅助函数，以特定格式记录二叉树结点值
+*返回值类型：status
+****************************************************************/
+
 status PreOrderPrint(BiTree T, FILE* fp) {
     if (T)
     {
@@ -576,6 +637,14 @@ status PreOrderPrint(BiTree T, FILE* fp) {
     }
     else return INFEASIBLE;
 }
+
+/***************************************************************
+*函数名称：SaveBiTree
+*函数功能：将二叉树的结点数据写入到文件FileName中
+*注释：打印带空枝的先序序列，并以-1 null作为结束标志
+*返回值类型：status
+****************************************************************/
+
 status SaveBiTree(BiTree T, char FileName[]) {
     // 将二叉树的结点数据写入到文件FileName中
     FILE* fp = fopen(FileName, "w");
@@ -588,6 +657,14 @@ status SaveBiTree(BiTree T, char FileName[]) {
     fclose(fp); // 关闭文件
     return OK;
 }
+
+/***************************************************************
+*函数名称：LoadBiTree
+*函数功能：从文件中读取二叉树信息，创建二叉树
+*注释：读取带空枝的先序序列，调用CreateBiTree函数
+*返回值类型：status
+****************************************************************/
+
 status LoadBiTree(BiTree& T, char FileName[]) {
     FILE* fp = fopen(FileName, "r");
     if (!fp) // 检查文件是否成功打开
