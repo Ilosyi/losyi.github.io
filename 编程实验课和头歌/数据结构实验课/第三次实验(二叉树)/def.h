@@ -5,6 +5,8 @@
 #include<string.h>
 #include<stack>
 #include<queue>
+#include <vector>
+#include <iomanip>
 using namespace std;
 #define TRUE 1
 #define FALSE 0
@@ -14,7 +16,7 @@ using namespace std;
 #define OVERFLOW -2
 
 typedef int status;
-typedef int KeyType;
+typedef int KeyType; //关键字类型定义
 typedef struct {
 	KeyType  key;
 	char others[20];
@@ -26,7 +28,12 @@ typedef struct BiTNode {  //二叉链表结点的定义
 	struct BiTNode* lchild, * rchild;
 } BiTNode, * BiTree;
 
-typedef struct {
-	int pos;
-	TElemType data;
-} DEF;
+typedef struct   //二叉树集合的类型定义
+{
+	struct
+	{
+		char name[30];
+		BiTree T;
+	}elem[10];
+	int length;
+}ListTree;
