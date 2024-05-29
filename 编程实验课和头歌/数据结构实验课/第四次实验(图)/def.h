@@ -1,5 +1,8 @@
-#include<stdio.h>
+#include<iostream>
 #include<stdlib.h>
+#include<algorithm>
+#include<queue>
+using namespace std;
 #define TRUE 1
 #define FALSE 0
 #define OK 1
