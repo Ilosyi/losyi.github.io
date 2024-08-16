@@ -1,0 +1,29 @@
+1.开始定时器
+`timer->start(TIMEOUT);`
+2.关闭定时器
+`timer->stop();`
+3.在标签上显示图片
+ ```c++
+QImage img;//创建加载img对象
+    img.load("E:\\picture\\1.jpg");
+    ui->label->setPixmap(QPixmap::fromImage(img));//从img获取资源来显示
+```
+4.connect 开始定时
+` connect(timer,SIGNAL(timeout()),this,SLOT(timeoutSlot()));`
+5.槽函数
+```c++
+void Widget::timeoutSlot()
+{
+    QString path(QString::fromLocal8Bit("E:\\picture\\"));
+    path+=QString::number(picID);
+    path+=".jpg";
+    QImage img;//创建加载img对象
+    img.load(path);
+    ui->label->setPixmap(QPixmap::fromImage(img));
+    picID++;
+    if(picID==7)
+    {
+        picID=1;
+    }
+}
+```
