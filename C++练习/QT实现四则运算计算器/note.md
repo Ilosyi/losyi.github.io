@@ -1,14 +1,18 @@
 1.显示QString
 `ui->mainlineEdit->setText(expression)`
+
 2.用于设置窗口标题
 `this->setWindowTitle("计算器")`
+
  3.用于在控件上显示图片
 ```c++
     QIcon con("C:\\Users\\muke\\Pictures\\Screenshots\\back.png");
     ui->delButton->setIcon(con);
  ```
+
 4.删除结尾x个字符
 `expression.chop(x);(expression为QString类型)`
+
 5.计算器逻辑部分（栈）
 ```c++
 #include<iostream>
