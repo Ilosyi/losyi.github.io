@@ -42,3 +42,29 @@ if(filename.isEmpty())
     file.close();
 ```
 [Qt深入浅出（九）QString与QByteArray](https://blog.csdn.net/qq769651718/article/details/79357923)
+
+5.事件系统
+示例
+```c++
+void MainWindow::KeyPressEvent(QKeyEvent* k)
+{
+    if(k->modifiers()==Qt::ControlModifier&&k->key()==Qt::Key_S)
+    {
+        MainWindow::saveActionSlot();
+        qDebug()<<"Ctrl+S";
+    }
+}
+void MainWindow::mousePressEvent(QMouseEvent *m)
+{
+    QPoint pt=m->pos();
+    if(m->button()==Qt::LeftButton)
+    {
+        qDebug()<<"左键按下";
+    }
+    else if(m->button()==Qt::RightButton)
+    {
+        qDebug()<<"右键按下";
+    }
+}
+```
+[QT 学习之键盘事件（ keyPressEvent）](https://blog.csdn.net/yexiangcsdn/article/details/80337491)
