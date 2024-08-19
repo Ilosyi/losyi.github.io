@@ -26,12 +26,12 @@ void Widget::on_okButton_clicked()
 
     QString ip=ui->lineEdit->text();
     QString port=ui->lineEdit_2->text();
-    if(!socket->state()==QAbstractSocket::UnconnectedState)
+   if(socket->state()==QAbstractSocket::UnconnectedState)
     {
-        socket->close();
+        socket->connectToHost(QHostAddress(ip),port.toShort());
     }
     //连接服务器
-    socket->connectToHost(QHostAddress(ip),port.toShort());
+
     //连接成功，socket对象会发出信号
     connect(socket, &QTcpSocket::connected, this, [this]() // 使用新语法连接信号和槽
             {
