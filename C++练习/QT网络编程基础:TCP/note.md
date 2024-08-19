@@ -41,7 +41,6 @@ void Widget::on_okButton_clicked()
 4.服务器
 
 ```c++
-
 server=new QTcpServer;
     server->listen(QHostAddress::AnyIPv4,PORT);//监听所有地址，PORT端口
     connect(server,&QTcpServer::newConnection,this,&Widget::newClientHandler);
@@ -56,7 +55,6 @@ void Widget::newClientHandler()
     ui->lineEdit->setText(socket->peerAddress().toString());
     ui->lineEdit_2->setText(QString::number(socket->peerPort()));
 }
-
 ```
 
 5.发送和接受数据
@@ -74,15 +72,38 @@ connect(m_tcpSocket,&QTcpSocket::readyRead,
     //将客户端反馈的数据显示到标签上
     ui->recvLabel->setText(bt);
 }
+
+void Widget::onReadMessage()
+{
+    QTcpSocket *s=(QTcpSocket *)sender();//获取信号发出者
+    ui->lineEdit_3->setText(QString(s->readAll()));
+
+}
 ```
+
 发送数据
 ```c++
 void Widget::on_sendBtn_clicked()
 {
-    m_tcpSocket->write(ui->sendEdit->text().toUtf8());
+    m_tcpSocket->write(ui->sendEdit->text().toUtf8());//转化为ba形式
     m_tcpSocket->flush();//清空缓冲区
 }
 ```
+
+6.启动新窗口
+ ```c++
+ connect(socket, &QTcpSocket::connected, this, [this]() // 使用新语法连接信号和槽
+            {
+                QMessageBox::information(this, "Tip", "Connection is OK");
+
+                this->hide();//隐藏当前
+                chat *c=new chat(socket);//放到堆区
+                c->show();
+            });
+```
+
+[Qt深入浅出（六）设计师界面](https://blog.csdn.net/qq769651718/article/details/79357904#:~:text=%E5%A6%82%E6%9E%9C%E6%83%B3%E5%9C%A8%E8%AE%BE%E8%AE%A1%E5%B8%88%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%97%B6%E5%80%99%E5%8B%BE%E9%80%89%E5%88%9B%E5%BB%BA%E7%95%8C%E9%9D%A2%EF%BC%8C%E9%BB%98%E8%AE%A4%E6%98%AF%E5%8B%BE%E9%80%89%E7%9A%84%E3%80%82,%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%8D%95%E7%8B%AC%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E7%95%8C%E9%9D%A2%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8F%B3%E9%94%AE%E5%B7%A5%E7%A8%8B%EF%BC%8C%E6%B7%BB%E5%8A%A0%E6%96%B0%E6%96%87%E4%BB%B6%EF%BC%8C%E9%80%89%E6%8B%A9Qt%EF%BC%8CQt%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%95%8C%E9%9D%A2%E7%B1%BB%20%E8%BF%99%E9%87%8C%E6%9C%89%E5%A4%9A%E4%B8%AA%E7%95%8C%E9%9D%A2%E6%A8%A1%E6%9D%BF%E5%8F%AF%E4%BE%9B%E9%80%89%E6%8B%A9%EF%BC%8C%E9%80%89%E6%8B%A9%E5%85%B6%E4%B8%AD%E4%B8%80%E7%A7%8D%EF%BC%8C%E4%B8%80%E7%9B%B4%E7%82%B9%E5%87%BB%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%8D%B3%E5%8F%AF%E3%80%82)
+
 
 
 
