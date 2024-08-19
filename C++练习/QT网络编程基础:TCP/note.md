@@ -9,7 +9,8 @@
 
 3.客户端连接
 
-···c++
+```c++
+
 void Widget::on_okButton_clicked()
 {
     //获取ip和端口号
@@ -33,9 +34,57 @@ void Widget::on_okButton_clicked()
          QMessageBox::warning(this, "Tip", "Connection exception ");
         qDebug()<<"连接异常";
     });
-
 }
-···
+
+```
+
+4.服务器
+
+```c++
+
+server=new QTcpServer;
+    server->listen(QHostAddress::AnyIPv4,PORT);//监听所有地址，PORT端口
+    connect(server,&QTcpServer::newConnection,this,&Widget::newClientHandler);
+
+void Widget::newClientHandler()
+{
+    //建立TCP连接
+    QTcpSocket *socket=server->nextPendingConnection();
+    //socket->peerAddress();//获取客户端地址
+   // socket->peerPort();//获取客户端端口号
+
+    ui->lineEdit->setText(socket->peerAddress().toString());
+    ui->lineEdit_2->setText(QString::number(socket->peerPort()));
+}
+
+```
+
+5.发送和接受数据
+
+接受并显示数据:
+
+```c++
+connect(m_tcpSocket,&QTcpSocket::readyRead,
+            this,&Widget::onReadMessage);
+            void Widget::onReadMessage()
+{
+    QByteArray bt;
+    bt.resize(m_tcpSocket->bytesAvailable());调节数组大小为返回的字节数
+    m_tcpSocket->read(bt.data(),bt.size());//读取数据
+    //将客户端反馈的数据显示到标签上
+    ui->recvLabel->setText(bt);
+}
+```
+发送数据
+```c++
+void Widget::on_sendBtn_clicked()
+{
+    m_tcpSocket->write(ui->sendEdit->text().toUtf8());
+    m_tcpSocket->flush();//清空缓冲区
+}
+```
+
+
 
 [QT之TCP网络通信——保姆级教程](https://blog.csdn.net/weixin_74734834/article/details/139690397#:~:text=%E5%9C%A8widget.h%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0,%23include%20%3CQTcpSocket%3E%E3%80%82)
 
