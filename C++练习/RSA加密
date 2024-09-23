@@ -1,0 +1,145 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+// 函数声明
+int gcd(int a, int b);
+int modInverse(int e, int phi);
+int powerMod(int base, int exp, int mod);
+
+// RSA加密解密函数
+vector<int> rsaEncrypt(const vector<int>& message, int e, int n);
+vector<int> rsaDecrypt(const vector<int>& ciphertext, int d, int n);
+
+// 字符与数字的转换函数
+vector<int> stringToNumbers(const string& str);
+string numbersToString(const vector<int>& numbers);
+
+int main() {
+    // 给定的公钥参数
+    int n = 391;  // n = 17 * 23
+    int e = 3;    // 公钥指数
+	cout << "请输入n和e：";
+    cin >> n >> e;
+    // 质因数分解 n = 391, p = 17, q = 23
+    int p = 17, q = 23;
+    int phi_n = (p - 1) * (q - 1);  // 计算欧拉函数 φ(n)
+    int d = modInverse(e, phi_n);   // 私钥 d
+
+    cout << "私钥 d: " << d << endl;
+
+    // 要加密的消息
+    string message = "HELLO";
+
+    // 将字符串转换为对应的数字
+    vector<int> messageNumbers = stringToNumbers(message);
+
+    // 执行加密
+    vector<int> encryptedMessage = rsaEncrypt(messageNumbers, e, n);
+
+    // 打印加密后的密文
+    cout << "加密后的密文: ";
+    for (int num : encryptedMessage) {
+        cout << num << " ";
+    }
+    cout << endl;
+
+    // 执行解密
+    vector<int> decryptedMessage = rsaDecrypt(encryptedMessage, d, n);
+
+    // 将解密后的数字转换回字符串
+    string decryptedStr = numbersToString(decryptedMessage);
+
+    // 打印解密后的明文
+    cout << "解密后的明文: " << decryptedStr << endl;
+
+    return 0;
+}
+
+// 计算最大公约数
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+// 扩展欧几里得算法计算模逆
+int modInverse(int e, int phi) {
+    int t = 0, newT = 1;
+    int r = phi, newR = e;
+
+    while (newR != 0) {
+        int quotient = r / newR;
+        int tempT = t;
+        t = newT;
+        newT = tempT - quotient * newT;
+
+        int tempR = r;
+        r = newR;
+        newR = tempR - quotient * newR;
+    }
+
+    if (r > 1) {
+        throw runtime_error("模逆不存在");
+    }
+    if (t < 0) {
+        t += phi;
+    }
+
+    return t;
+}
+
+// 快速幂取模
+int powerMod(int base, int exp, int mod) {
+    int result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        exp = exp >> 1;
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+// RSA加密
+vector<int> rsaEncrypt(const vector<int>& message, int e, int n) {
+    vector<int> encryptedMessage;
+    for (int m : message) {
+        encryptedMessage.push_back(powerMod(m, e, n));
+    }
+    return encryptedMessage;
+}
+
+// RSA解密
+vector<int> rsaDecrypt(const vector<int>& ciphertext, int d, int n) {
+    vector<int> decryptedMessage;
+    for (int c : ciphertext) {
+        decryptedMessage.push_back(powerMod(c, d, n));
+    }
+    return decryptedMessage;
+}
+
+// 将字符串转换为数字（A -> 0, B -> 1, ..., Z -> 25）
+vector<int> stringToNumbers(const string& str) {
+    vector<int> numbers;
+    for (char c : str) {
+        numbers.push_back(c - 'A');
+    }
+    return numbers;
+}
+
+// 将数字转换回字符串
+string numbersToString(const vector<int>& numbers) {
+    string result;
+    for (int num : numbers) {
+        result += (num + 'A');
+    }
+    return result;
+}
